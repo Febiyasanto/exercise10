@@ -1,0 +1,60 @@
+package URK24CS1263;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class LoginApp extends JFrame implements ActionListener {
+
+    JTextField userField;
+    JPasswordField passField;
+    JButton loginButton;
+
+    public LoginApp() {
+        setTitle("Swing Application");
+        setLayout(null);
+
+        JLabel userLabel = new JLabel("Username");
+        userLabel.setBounds(50, 40, 100, 30);
+        add(userLabel);
+
+        userField = new JTextField();
+        userField.setBounds(150, 40, 150, 30);
+        add(userField);
+
+        JLabel passLabel = new JLabel("Password");
+        passLabel.setBounds(50, 90, 100, 30);
+        add(passLabel);
+
+        passField = new JPasswordField();
+        passField.setBounds(150, 90, 150, 30);
+        add(passField);
+
+        loginButton = new JButton("Login");
+        loginButton.setBounds(130, 140, 100, 30);
+        loginButton.addActionListener(this);
+        add(loginButton);
+
+        getContentPane().setBackground(new Color(220, 220, 230));
+        setSize(380, 250);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String username = userField.getText();
+        String password = new String(passField.getPassword());
+
+        if (username.equals("Karunya") && password.equals("Karunya")) {
+            JOptionPane.showMessageDialog(this, "Login Successful!", "Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Login Failed!", "Message", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        new LoginApp();
+    }
+}
