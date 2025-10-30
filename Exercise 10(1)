@@ -1,0 +1,123 @@
+package URK24CS1263;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class StudentRegistration_gui extends JFrame implements ActionListener {
+
+    JTextField nameField;
+    JRadioButton male, female;
+    JCheckBox apple, samsung, redmi, oneplus;
+    JComboBox<String> colorBox;
+    JButton saveButton;
+
+    public StudentRegistration_gui() {
+        setTitle("Register");
+        setLayout(new GridLayout(6, 2, 10, 10));
+
+        // Name
+        add(new JLabel("Name:"));
+        nameField = new JTextField();
+        add(nameField);
+
+        // Gender
+        add(new JLabel("Gender:"));
+        JPanel genderPanel = new JPanel();
+        male = new JRadioButton("Male");
+        female = new JRadioButton("Female");
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(male);
+        bg.add(female);
+        genderPanel.add(male);
+        genderPanel.add(female);
+        add(genderPanel);
+
+        // Model checkboxes
+        add(new JLabel("Model:"));
+        JPanel modelPanel = new JPanel();
+        apple = new JCheckBox("Apple");
+        samsung = new JCheckBox("Samsung");
+        redmi = new JCheckBox("Redmi");
+        oneplus = new JCheckBox("OnePlus");
+        modelPanel.add(apple);
+        modelPanel.add(samsung);
+        modelPanel.add(redmi);
+        modelPanel.add(oneplus);
+        add(modelPanel);
+
+        // Color dropdown
+        add(new JLabel("Color:"));
+        colorBox = new JComboBox<>(new String[]{"Black", "White", "Blue", "Red"});
+        add(colorBox);
+
+        // Save button
+        add(new JLabel(""));
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(this);
+        add(saveButton);
+
+        setSize(450, 300);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Collect user data
+        String name = nameField.getText();
+        String gender = male.isSelected() ? "Male" : (female.isSelected() ? "Female" : "Not specified");
+
+        StringBuilder models = new StringBuilder();
+        if (apple.isSelected()) models.append("Apple, ");
+        if (samsung.isSelected()) models.append("Samsung, ");
+        if (redmi.isSelected()) models.append("Redmi, ");
+        if (oneplus.isSelected()) models.append("OnePlus, ");
+        if (models.length() > 0) models.setLength(models.length() - 2); // remove last comma
+
+        String color = (String) colorBox.getSelectedItem();
+
+        // Open second frame to display the result
+        new DisplayFrame(name, gender, models.toString(), color);
+    }
+
+    // Second JFrame for display
+    class DisplayFrame extends JFrame {
+        public DisplayFrame(String name, String gender, String model, String color) {
+            setTitle("Display");
+            setLayout(new BorderLayout(10, 10));
+
+            // Java logo
+            JLabel iconLabel = new JLabel(new ImageIcon(UIManager.getIcon("OptionPane.informationIcon")));
+
+            // Display text
+            JTextArea info = new JTextArea(
+                    "Name: " + name +
+                    "\nGender: " + gender +
+                    "\nModel: " + model +
+                    "\nColor: " + color);
+            info.setEditable(false);
+            info.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+            // OK button
+            JButton ok = new JButton("OK");
+            ok.addActionListener(ev -> dispose());
+
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            panel.add(ok);
+
+            add(iconLabel, BorderLayout.WEST);
+            add(info, BorderLayout.CENTER);
+            add(panel, BorderLayout.SOUTH);
+
+            setSize(350, 200);
+            setLocationRelativeTo(null);
+            setVisible(true);
+        }
+    }
+
+    public static void main(String[] args) {
+        new StudentRegistration_gui();
+    }
+}
